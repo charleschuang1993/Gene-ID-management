@@ -1,0 +1,20 @@
+
+useMart_generate_ensembl_release = function(x)
+ {
+   version_to_merge <- as.data.frame(listEnsemblArchives())
+   all_release_ensembl = NULL
+   count = 0
+   for(i in version_to_merge[,"url"])
+    { #-- Create objects  'r.1', 'r.2', ... 'r.6' --
+      count = count+1
+      release_ensembl <- paste("release_ensembl", tolower(as.data.frame(strsplit(version_to_merge[,"name"][count],split=" ",fixed=T))[2,]), sep = "_")
+
+      assign(release_ensembl, useMart(biomart="ENSEMBL_MART_ENSEMBL", host= i ,path="/biomart/martservice",dataset="hsapiens_gene_ensembl"),envir = .GlobalEnv)
+      #mart =
+      print(c(count,i))
+      all_release_ensembl = rbind(all_release_ensembl,release_ensembl)
+      print(all_release_ensembl)
+    }
+   list = list(all_release_ensembl = all_release_ensembl)
+  return(list)
+ }
