@@ -1,0 +1,19 @@
+useEnsembl_generate_ensembl_release = function(x)
+ {
+    version_to_merge <- as.data.frame(strsplit(listEnsemblArchives() [,"name"],split=" ",fixed=T))[2,]
+    all_release_ensembl = NULL
+
+    for(i in version_to_merge)
+      { #-- Create objects  'r.1', 'r.2', ... 'r.6' --
+        release_ensembl <- paste("release_ensembl", tolower(i), sep = "_")
+        assign(release_ensembl, useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl", version=i),envir = .GlobalEnv)
+        print(i)
+        print(release_ensembl)
+        all_release_ensembl = rbind(all_release_ensembl,release_ensembl)
+        #envir = .GlobalEnv #若要定義成函式，一定要加這個參數，否則叫不出變數
+        #print(all_release_ensembl)
+      }
+
+
+    list = return(all_release_ensembl)
+ }
