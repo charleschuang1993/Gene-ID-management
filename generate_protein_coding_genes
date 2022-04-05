@@ -1,0 +1,18 @@
+generate_protein_coding_genes = function(x,y)
+  {
+    file_path = toString(y)
+    y='C:/Users/User/Desktop/Homo_sapiens.GRCh37.70.gtf'
+    gtf1 <- rtracklayer::import(file_path)
+    gtf_df <- as.data.frame(gtf1)
+    gtf_df_2 = gtf_df[,c("gene_id","transcript_name","gene_biotype","protein_id")]
+
+    #gtf_df_2_protein_id = gtf_df_2[,"protein_id"]
+    gtf_df_2_protein_coding_genes = gtf_df_2[gtf_df_2[,"gene_biotype"] == "protein_coding",]
+    #length(gtf_df[,1])
+    #length(gtf_df_2_na_omit[,1])
+    #length(gtf_df_2_na_omit[duplicated(gtf_df_2_na_omit[,"protein_id"]),1])
+    gtf_df_2_na_omit = gtf_df_2_protein_coding_genes[!is.na(gtf_df_2_protein_coding_genes[,"protein_id"]),]
+
+
+    non_duplicated_protein_id = gtf_df_2_na_omit[duplicated(gtf_df_2_na_omit[,"protein_id"])=="FALSE",]
+  }
