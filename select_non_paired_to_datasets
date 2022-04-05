@@ -1,0 +1,9 @@
+
+select_non_paired_to_datasets = function(output_data,input_data)
+ { output_data = as.data.frame(output_data)
+   input_data= as.data.frame(input_data)
+   colnames(output_data) = colnames(input_data)
+   rbind_data = rbind(as.data.frame(output_data),as.data.frame(input_data))
+   non_paired_output_data = setdiff(rbind_data[,1], rbind_data[duplicated(rbind_data),])
+   return(non_paired_output_data)
+ }
