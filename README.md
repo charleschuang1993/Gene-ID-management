@@ -1,3 +1,4 @@
 # match-gene-ID-from-different-database
-match different Gene ID from GENCOD, GRCG38, ENSEMBL ...
-COMPARTMENTS database generated the gene list with ENSP. We could not sure that which ensembl version it is.
+TCGA gene id is provided by ENSG, but another database is provided by ENSP.
+We are not sure those version result in hard to match and merge the information from two resource.
+COMPARTMENTS database generated the gene list with ENSP. We are not sure that which ensembl version it is.
