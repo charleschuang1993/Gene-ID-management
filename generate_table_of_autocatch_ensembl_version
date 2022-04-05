@@ -1,0 +1,47 @@
+generate_table_of_autocatch_ensembl_version =  function(input_data,attributs)
+  {
+    useMart_generate_ensembl_release = useMart_generate_ensembl_release()
+    all_release_ensembl = useMart_generate_ensembl_release$all_release_ensembl
+
+    input_data = NULL
+    count = 0
+    total_out_data = data.frame()
+    for (release_ensembl in all_release_ensembl)
+     {
+       #print(length(input_data[,1]))
+       #print(c(count,release_ensembl))
+       #print(c(length(input_data[,1]),"test"))
+       if(count == 0)
+        {
+          input_data = df_cmp_3_to_5_ensp
+          output_data = getBM(attributes = c("ensembl_gene_id","hgnc_symbol" ,"hgnc_id", "ensembl_peptide_id"), filters = "ensembl_peptide_id", values = input_data,mart= get(release_ensembl))
+          if(length(output_data[,1])>0)
+           {
+            output_data = cbind(output_data,release_ensembl)
+           }
+
+          total_out_data = rbind(total_out_data,output_data)
+          non_paired_rbind_output_data = select_non_paired_to_datasets(output_data[,"ensembl_peptide_id"],input_data)
+          input_data = as.data.frame(non_paired_rbind_output_data)
+          count = count + 1
+          print(c(count,release_ensembl,length(input_data[,1]),length(output_data[,"ensembl_peptide_id"])))
+        }
+       else
+        {
+          output_data = getBM(c("ensembl_gene_id","hgnc_symbol" ,"hgnc_id", "ensembl_peptide_id"), filters = "ensembl_peptide_id", values = input_data,mart= get(release_ensembl))
+          if(length(output_data[,1])>0)
+           {
+            output_data = cbind(output_data,release_ensembl)
+           }
+          df_output_data = as.data.frame(output_data[,"ensembl_peptide_id"])
+          total_out_data = rbind(total_out_data,output_data)
+          non_paired_rbind_output_data = select_non_paired_to_datasets(output_data[,"ensembl_peptide_id"],input_data)
+          input_data = as.data.frame(non_paired_rbind_output_data)
+          count = count + 1
+          print(c(count,release_ensembl,length(input_data[,1]),length(df_output_data)))
+
+        }
+      list = list(total_out_data = total_out_data)
+      return(list)
+     }
+  }
